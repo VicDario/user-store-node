@@ -12,6 +12,6 @@ export class ErrorHandlerMiddleware {
       res.status(error.statusCode).json({ error: error.message });
       return;
     }
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
