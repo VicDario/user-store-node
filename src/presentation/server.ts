@@ -1,5 +1,6 @@
 import express, { Router } from 'express';
 import path from 'path';
+import { ErrorHandlerMiddleware } from './middlewares/error-handler.middleware';
 
 interface Options {
   port: number;
@@ -31,6 +32,8 @@ export class Server {
 
     //* Routes
     this.app.use(this.routes);
+
+    this.app.use(ErrorHandlerMiddleware.middleware);
 
     //* SPA /^\/(?!api).*/  <== Únicamente si no empieza con la palabra api
     this.app.get('*', (req, res) => {
