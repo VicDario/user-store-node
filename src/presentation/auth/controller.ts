@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import { RegisterUserDto } from '../../domain/dtos/auth/register-user.dto';
+import { LoginUserDto, RegisterUserDto } from '../../domain';
 import { AuthService } from '../services/auth.service';
 
 export class AuthController {
@@ -17,7 +17,17 @@ export class AuthController {
       .catch((error) => next(error));
   };
 
-  loginUser = (request: Request, res: Response) => {};
+  loginUser = (req: Request, res: Response, next: NextFunction) => {
+    const [error, loginUserDto] = LoginUserDto.create(req.body);
+    if (error) {
+      res.status(400).json({ error });
+      return;
+    }
+    this.authService
+      .loginUser(loginUserDto!)
+      .then((response) => res.json(response))
+      .catch((error) => next(error));
+  };
 
   validateEmail = (request: Request, res: Response) => {};
 }
