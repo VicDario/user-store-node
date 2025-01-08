@@ -21,6 +21,7 @@
   "dependencies": {
     "dotenv": "16.4.6",
     "env-var": "7.5.0",
-    "express": "4.21.2"
+    "express": "4.21.2",
+    "mongoose": "^8.9.3"
   }
 }
