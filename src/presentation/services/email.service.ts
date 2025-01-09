@@ -13,6 +13,7 @@ export interface Attachment {
 }
 
 export interface MailerOptions {
+  postToProvider: boolean;
   mailerService: string;
   mailerEmail: string;
   mailerSecretKey: string;
@@ -20,9 +21,11 @@ export interface MailerOptions {
 
 export class EmailService {
   private transporter: Transporter;
+  private readonly postToProvider: boolean;
 
   constructor(options: MailerOptions) {
-    const { mailerService, mailerEmail, mailerSecretKey } = options
+    const { mailerService, mailerEmail, mailerSecretKey, postToProvider } = options;
+    this.postToProvider = postToProvider;
     this.transporter = createTransport({
       service: mailerService,
       auth: {
@@ -33,6 +36,7 @@ export class EmailService {
   }
 
   async sendEmail(options: SendMailOptions): Promise<boolean> {
+    if (!this.postToProvider) return true;
     const { to, subject, htmlBody, attachments = [] } = options;
     try {
       const sendInformation = await this.transporter.sendMail({
