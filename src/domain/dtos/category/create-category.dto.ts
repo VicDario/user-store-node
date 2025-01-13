@@ -10,7 +10,6 @@ export class CreateCategoryDto {
 
     if (!name) return ['Missing name'];
     if (typeof available !== 'boolean') availableBoolean = available === 'true';
-    else return ['Available must be a boolean'];
 
     return [undefined, new CreateCategoryDto(name, availableBoolean)];
   }
