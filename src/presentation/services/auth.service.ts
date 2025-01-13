@@ -1,5 +1,5 @@
 import { BcryptAdapter, envs, JwtAdapter } from '../../config';
-import { userModel } from '../../data';
+import { UserModel } from '../../data';
 import {
   CustomError,
   LoginUserDto,
@@ -12,11 +12,11 @@ export class AuthService {
   constructor(private readonly emailService: EmailService) {}
 
   public async registerUser(registerUserDto: RegisterUserDto) {
-    const existUser = await userModel.findOne({ email: registerUserDto.email });
+    const existUser = await UserModel.findOne({ email: registerUserDto.email });
     if (existUser) throw CustomError.badRequest('Email already exists');
 
     try {
-      const user = new userModel(registerUserDto);
+      const user = new UserModel(registerUserDto);
       user.password = BcryptAdapter.hash(user.password);
       await user.save();
 
@@ -34,7 +34,7 @@ export class AuthService {
   }
 
   public async loginUser(loginUserDto: LoginUserDto) {
-    const user = await userModel.findOne({ email: loginUserDto.email });
+    const user = await UserModel.findOne({ email: loginUserDto.email });
     if (!user) throw CustomError.badRequest('Email or password not valid');
 
     const isMatching = BcryptAdapter.compare(
@@ -59,7 +59,7 @@ export class AuthService {
     const { email } = payload as { email: string };
     if (!email) throw CustomError.internalServer('Email not in token');
 
-    const user = await userModel.findOne({ email });
+    const user = await UserModel.findOne({ email });
     if(!user) throw CustomError.internalServer('Email not exists');
 
     user.emailValidated = true;
