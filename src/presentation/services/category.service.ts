@@ -1,5 +1,5 @@
 import { CategoryModel } from '../../data';
-import { CreateCategoryDto, CustomError, UserEntity } from '../../domain';
+import { CreateCategoryDto, CustomError, PaginationDto, UserEntity } from '../../domain';
 import { CategoryEntity } from '../../domain/entities/category.entity';
 
 export class CategoryService {
@@ -19,19 +19,16 @@ export class CategoryService {
       });
       await category.save();
 
-      return {
-        id: category.id,
-        name: category.name,
-        available: category.available,
-      };
+      return CategoryEntity.fromObject(category);
     } catch (error) {
       throw CustomError.internalServer('Error creating category');
     }
   }
 
-  public async getCategories(): Promise<CategoryEntity[]> {
+  public async getCategories(paginationDto: PaginationDto): Promise<CategoryEntity[]> {
+    const skip = paginationDto.limit * (paginationDto.page - 1);
     try {
-      const categories = await CategoryModel.find();
+      const categories = await CategoryModel.find().skip(skip).limit(paginationDto.limit).exec();
       return categories.map(CategoryEntity.fromObject);
     } catch (error) {
       throw CustomError.internalServer('Error getting categories');
