@@ -1,11 +1,11 @@
 import { CategoryModel } from '../../data';
 import {
+  CategoryEntity,
   CreateCategoryDto,
   CustomError,
   PaginationDto,
   UserEntity,
 } from '../../domain';
-import { CategoryEntity } from '../../domain/entities/category.entity';
 
 export class CategoryService {
   public async createCategory(
