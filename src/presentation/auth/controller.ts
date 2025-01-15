@@ -13,7 +13,7 @@ export class AuthController {
     }
     this.authService
       .registerUser(registerUserDto!)
-      .then((user) => res.json(user))
+      .then((user) => res.status(201).json(user))
       .catch((error) => next(error));
   };
 
@@ -25,13 +25,14 @@ export class AuthController {
     }
     this.authService
       .loginUser(loginUserDto!)
-      .then((response) => res.json(response))
+      .then((response) => res.status(201).json(response))
       .catch((error) => next(error));
   };
 
   validateEmail = (request: Request, res: Response) => {
     const { token } = request.params;
-    this.authService.validateEmail(token)
+    this.authService
+      .validateEmail(token)
       .then(() => res.json('Email validated'));
-  }; 
+  };
 }
