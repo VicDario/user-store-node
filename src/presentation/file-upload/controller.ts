@@ -14,12 +14,7 @@ export class FileUploadController {
       return
     }
 
-    if (!req.files || Object.keys(req.files).length === 0) {
-      next(CustomError.badRequest('No files were uploaded.'));
-      return;
-    }
-
-    const file = req.files.file as UploadedFile;
+    const file = req.body.file.at(0) as UploadedFile;
     this.fileUploadService
       .uploadSingle(file, `uploads/${type}`)
       .then((response) => res.status(201).json(response))
