@@ -11,7 +11,7 @@ export class FileUploadService {
     if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath);
   }
 
-  public uploadSingle(
+  public async uploadSingle(
     file: UploadedFile,
     folder: string = 'uploads',
     validExtensions: string[] = ['jpg', 'jpeg', 'png', 'gif']
