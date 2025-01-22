@@ -8,12 +8,6 @@ export class FileUploadController {
 
   uploadFile = (req: Request, res: Response, next: NextFunction) => {
     const type = req.params.type;
-    const validTypes = ['users', 'products', 'categories'];
-    if (!validTypes.includes(type)) {
-      next(CustomError.badRequest('Invalid folder'));
-      return
-    }
-
     const file = req.body.file.at(0) as UploadedFile;
     this.fileUploadService
       .uploadSingle(file, `uploads/${type}`)
@@ -23,12 +17,6 @@ export class FileUploadController {
 
   uploadMultipleFiles = (req: Request, res: Response, next: NextFunction) => {
     const type = req.params.type;
-    const validTypes = ['users', 'products', 'categories'];
-    if (!validTypes.includes(type)) {
-      next(CustomError.badRequest('Invalid folder'));
-      return
-    }
-
     const files = req.body.files as UploadedFile[];
     this.fileUploadService
       .uploadMultiple(files, `uploads/${type}`)
