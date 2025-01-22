@@ -18,7 +18,7 @@ export class FileUploadController {
     this.fileUploadService
       .uploadSingle(file)
       .then((response) => res.status(201).json(response))
-      .catch(() => next());
+      .catch((error) => next(error));
   };
 
   uploadMultipleFiles = (req: Request, res: Response, next: NextFunction) => {
