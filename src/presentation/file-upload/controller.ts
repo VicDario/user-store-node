@@ -22,6 +22,17 @@ export class FileUploadController {
   };
 
   uploadMultipleFiles = (req: Request, res: Response, next: NextFunction) => {
-    res.json('UploadMultipleFiles');
+    const type = req.params.type;
+    const validTypes = ['users', 'products', 'categories'];
+    if (!validTypes.includes(type)) {
+      next(CustomError.badRequest('Invalid folder'));
+      return
+    }
+
+    const files = req.body.files as UploadedFile[];
+    this.fileUploadService
+      .uploadMultiple(files, `uploads/${type}`)
+      .then((response) => res.status(201).json(response))
+      .catch((error) => next(error));
   };
 }
