@@ -8,7 +8,7 @@ export class FileUploadService {
   constructor(private readonly uuid = UUIDAdapter) {}
 
   private checkFolder(folderPath: string) {
-    if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath);
+    if (!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
   }
 
   public async uploadSingle(
@@ -23,7 +23,7 @@ export class FileUploadService {
     const destination = path.join(__dirname, `../../../public/`, folder);
     this.checkFolder(destination);
     const fileName = `${this.uuid.generate()}.${fileExtension}`;
-    file.mv(`${destination}/${fileName}`);
+    await file.mv(`${destination}/${fileName}`);
     return { fileName };
   }
 
